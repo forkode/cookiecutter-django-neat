@@ -1,0 +1,20 @@
+#!/bin/sh
+./manage.py check
+if [ $? -ne 0 ]; then exit 1
+fi
+
+pep8 {{ cookiecutter.repo_name }}
+if [ $? -ne 0 ]; then exit 1
+fi
+
+pylint --rcfile=.pylintrc {{ cookiecutter.repo_name }} settings
+if [ $? -ne 0 ]; then exit 1
+fi
+
+pylint --rcfile=.pylintrc --py3k {{ cookiecutter.repo_name }} settings
+if [ $? -ne 0 ]; then exit 1
+fi
+
+bandit .
+if [ $? -ne 0 ]; then exit 1
+fi

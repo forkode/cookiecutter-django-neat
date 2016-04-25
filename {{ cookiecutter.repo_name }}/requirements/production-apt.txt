@@ -1,0 +1,6 @@
+gettext
+python
+python-dev
+python-pip
+python-setuptools
+supervisor

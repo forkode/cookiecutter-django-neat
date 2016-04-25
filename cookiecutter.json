@@ -1,0 +1,9 @@
+{
+    "project_name": "Test project",
+    "repo_name": "{{ cookiecutter.project_name|replace(' ', '_')|replace('-', '_')|lower }}",
+    "full_name": "Anonymous",
+    "description": "This is a test project",
+    "views": "test",
+    "use_rest_framework": "n",
+    "_extensions": ["jinja2_time.TimeExtension"]
+}

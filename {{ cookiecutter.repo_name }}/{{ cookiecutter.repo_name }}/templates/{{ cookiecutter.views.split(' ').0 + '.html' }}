@@ -1,0 +1,6 @@
+{{ "{% extends 'base.html' %}" }}
+{{ '{% block title %}' }}{{ cookiecutter.views.split(' ').0 }}{{ '{% endblock %}' }}
+{%- raw %}
+{% block content %}
+{% endblock %}
+{%- endraw %}

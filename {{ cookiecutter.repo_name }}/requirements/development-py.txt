@@ -1,0 +1,14 @@
+-r base-py.txt
+
+# django extensions
+django-debug-toolbar==1.4
+django-extensions==1.6.1
+factory_boy==2.7.0
+{% if cookiecutter.use_rest_framework == 'y' -%}
+  -e git+git://github.com/rapilabs/django-rest-framework-generator.git#egg=django-rest-framework-generator
+{%- endif %}
+
+# debugging
+ipdb==0.9.0
+rpdb==0.1.6
+werkzeug==0.11.5  # for werkzeug debug page
