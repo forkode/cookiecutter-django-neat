@@ -1,21 +1,22 @@
 # core components
-django==1.9.5
-gunicorn==19.4.5
+django==1.10.4
+gunicorn==19.6.0
 
 # linters
-bandit==0.17.3
-pep8==1.7.0
-pylint==1.5.5
+bandit==0.17
+pycodestyle==2.2.0
+pylint==1.6.4
 pylint-common==0.2.2
-pylint-django==0.7.1
+pylint-django==0.7.2
 
 # utils
-coverage==4.0.3
-docutils==0.12
-django-nose==1.4.3
+coverage==4.2
+docutils==0.13.1
+django-environ==0.4.1
+django-nose==1.4.4
 {% if cookiecutter.use_rest_framework == 'y' -%}
-  djangorestframework==3.3.3
+  djangorestframework==3.5.3
 {%- endif %}
 
 # essential libraries
-requests==2.9.1
+requests==2.12.3

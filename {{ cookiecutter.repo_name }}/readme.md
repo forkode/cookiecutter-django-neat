@@ -16,6 +16,8 @@
      . ./env/bin/activate
      ./manage.py runserver_plus
 
+  Then export DEPLOYMENT='development'
+
   Alternatively you can run everything in docker:
 
         docker-compose up

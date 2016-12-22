@@ -8,7 +8,10 @@ INSTALLED_APPS += (
     {% if cookiecutter.use_rest_framework == 'y' -%}
       'django_rest_framework_generator',
     {%- endif %}
-    '{{ cookiecutter.repo_name }}',
+)
+
+MIDDLEWARE_CLASSES += (
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

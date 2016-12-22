@@ -10,17 +10,25 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 from __future__ import absolute_import
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import environ
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT_DIR = environ.Path(__file__) - 2 # FIXME
+APPS_DIR = ROOT_DIR.path('{{ cookiecutter.repo_name }}')
+
+env = environ.Env()
+env.read_env()
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # FIXME
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#3(^l$sg$_j!1*a)y!t(n@m=lswpnl-y9gpgdb=vz*+(rgu#e4'
+SECRET_KEY = 'kk9ke)cshq#3wad@-w&d!j^7(q&*l_vrh=q+uq1&i-8s8^zk09' # FIXME
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,6 +49,7 @@ INSTALLED_APPS = (
     {% if cookiecutter.use_rest_framework == 'y' -%}
       'rest_framework',
     {%- endif %}
+    '{{ cookiecutter.repo_name }}',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -79,12 +88,8 @@ WSGI_APPLICATION = '{{ cookiecutter.repo_name }}.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': env.db('DATABASE_URL', default='sqlite:///db.sqlite'),
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -104,23 +109,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = './static/'
-
-LOGGING = {
-    'version': 1,{# FIXME fix logging, move somewhere #}
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': './log/debug.log',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+STATIC_ROOT = 'static/'
