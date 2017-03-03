@@ -1,0 +1,19 @@
+{% raw -%}
+{% load static %}
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<h1>login</h1>
+
+<form method="POST">
+{% for field in form %}
+  <div>
+    <label for="{{ field.auto_id }}">{{ field.label }}</label>
+    {{ field }}
+    <span>{{ field.errors }}</span>
+  </div>
+  {% endfor %}
+
+  {% csrf_token %}
+  <button type="submit">login</button>
+</form>
+{%- endraw %}
