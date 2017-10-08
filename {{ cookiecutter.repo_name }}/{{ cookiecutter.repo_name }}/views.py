@@ -1,14 +1,18 @@
+"""{{ cookiecutter.project_name }} views."""
 from __future__ import absolute_import
 
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
+{%- if cookiecutter.use_rest_framework == 'y' %}
+from rest_framework import viewsets
+{%- endif %}
 {% set views = cookiecutter.views.split(' ') %}
 
 class PingView(View):
-    """
-    Test if server is up
-    """
+    """Test if server is up."""
+
     def get(self, request):  # pylint: disable=unused-argument
+        """Pong response."""
         return HttpResponse('pong')
 {%- for view in views %}
 

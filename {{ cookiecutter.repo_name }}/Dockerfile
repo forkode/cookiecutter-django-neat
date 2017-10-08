@@ -1,7 +1,12 @@
-FROM ubuntu:16.04
+FROM ubuntu:17.04
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV DEPLOYMENT production
+
+COPY ./ci /opt/{{ cookiecutter.repo_name }}/ci
+
+RUN apt-get update &&\
+    apt-get install -y --no-install-recommends apt-utils &&\
+    cat /opt/{{ cookiecutter.repo_name }}/ci/apt-requirements.txt | xargs apt-get install -y --no-install-recommends
 
 RUN locale-gen en_US.UTF-8
 
@@ -9,22 +14,16 @@ ENV LANG='en_US.UTF-8'
 ENV LC_ALL='en_US.UTF-8'
 ENV LANGUAGE='en_US.UTF-8'
 
-COPY ./requirements /opt/{{ cookiecutter.repo_name }}/requirements
-RUN apt-get update &&\
-    cat /opt/{{ cookiecutter.repo_name }}/requirements/production-apt.txt | xargs apt-get install -y --no-install-recommends
-RUN pip3 install -r /opt/{{ cookiecutter.repo_name }}/requirements/production-py.txt
-
-COPY ./configs/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN python3.6 -m pip install -r /opt/{{ cookiecutter.repo_name }}/ci/py-requirements.txt
 
 COPY . /opt/{{ cookiecutter.repo_name }}/
 WORKDIR /opt/{{ cookiecutter.repo_name }}/
 
 RUN mkdir -p locale
-
-RUN python3 ./manage.py compilemessages
-RUN python3 ./manage.py collectstatic --no-input
-RUN python3 ./manage.py check
+RUN python3.6 ./manage.py compilemessages
+RUN python3.6 ./manage.py collectstatic --no-input
+RUN python3.6 ./manage.py check
 
 VOLUME /opt/{{ cookiecutter.repo_name }}/static/
 EXPOSE 8000
-CMD ["/usr/bin/supervisord"]
+ENTRYPOINT ["/opt/{{ cookiecutter.repo_name }}/docker-entrypoint.sh"]

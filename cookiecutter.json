@@ -5,5 +5,6 @@
     "description": "This is a test project",
     "views": "test",
     "use_rest_framework": "n",
+    "use_sentry": "n",
     "_extensions": ["jinja2_time.TimeExtension"]
 }

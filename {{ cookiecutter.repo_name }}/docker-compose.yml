@@ -1,13 +1,15 @@
+# for development purposes
 version: '2'
 services:
   {{ cookiecutter.repo_name }}:
     build: .
+    env_file: .env
 
   {{ cookiecutter.repo_name }}_nginx:
     image: nginx
     ports:
       - "0.0.0.0:8000:80"
     volumes:
-      - './configs/nginx.conf:/etc/nginx/nginx.conf:ro'
+      - './config/nginx.conf:/etc/nginx/conf.d/default.conf:ro'
     volumes_from:
       - '{{ cookiecutter.repo_name }}'

@@ -1,26 +1,37 @@
+"""Settings for all environments."""
+import sys
+from os import path
+
 import environ
+{%- if cookiecutter.use_sentry == 'y' %}
+import raven
+{%- endif %}
+
 root = environ.Path(__file__) - 2
-env = environ.Env(DEBUG=(bool, False),) # set default values and casting
-environ.Env.read_env() # reading .env file
+env = environ.Env(
+    ALLOWED_HOSTS=(list, []),
+    DEBUG=(bool, False),
+{%- if cookiecutter.use_sentry == 'y' %}
+    SENTRY_DSN=(str, ''),
+{%- endif %}
+)  # set default values and casting
 
-SITE_ROOT = root()
+if path.exists(str(root.path('.env'))):
+    env.read_env(str(root.path('.env')))  # reading .env file
 
-DEBUG = env('DEBUG') # False if not in os.environ
-
-DATABASES = {
-    'default': env.db(), # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-}
+DEBUG = env('DEBUG')  # False if not in os.environ
 
 public_root = root.path('static/')
 
 MEDIA_ROOT = public_root('media')
 MEDIA_URL = 'media/'
 STATIC_ROOT = public_root('static')
-STATIC_URL = 'static/'
+STATIC_URL = '/static/static/'
 
-SECRET_KEY = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
+# Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
+SECRET_KEY = '[[ hooks.secret ]]'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 # Application definition
 
@@ -32,8 +43,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
-    {% if cookiecutter.use_rest_framework == 'y' -%}
-      'rest_framework',
+    {%- if cookiecutter.use_sentry == 'y' %}
+    'raven.contrib.django.raven_compat',
+    {%- endif %}
+    {%- if cookiecutter.use_rest_framework == 'y' %}
+    'rest_framework',
     {%- endif %}
     '{{ cookiecutter.repo_name }}',
 )
@@ -94,28 +108,52 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'syslog': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.SysLogHandler',
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'stream': sys.stdout,
         },
+{%- if cookiecutter.use_sentry == 'y' %}
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+{%- endif %}
     },
     'loggers': {
         'django': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
+            'handlers': [
+{%- if cookiecutter.use_sentry == 'y' %}
+                'sentry',
+{%- endif %}
+                'console',
+            ],
+            'level': 'ERROR',
             'propagate': True,
         },
     },
 }
+
+{%- if cookiecutter.use_sentry == 'y' %}
+try:
+    release = raven.fetch_git_sha(root())
+except raven.exceptions.InvalidGitRepository:
+    release = 'unknown'
+
+RAVEN_CONFIG = {
+    'dsn': env('SENTRY_DSN'),
+    'release': release,
+}
+{%- endif %}
+
+# if 'test' in sys.argv:
+#     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
 
 if DEBUG:
     INSTALLED_APPS += (
         'debug_toolbar',
         'django_extensions',
         'django_nose',
-        {% if cookiecutter.use_rest_framework == 'y' -%}
-          'django_rest_framework_generator',
-        {%- endif %}
     )
 
     MIDDLEWARE_CLASSES += (
@@ -128,4 +166,5 @@ if DEBUG:
         '--with-coverage',
         '--cover-package={{ cookiecutter.repo_name }}',
         '--processes=8',
+        '--cover-html',
     ]
