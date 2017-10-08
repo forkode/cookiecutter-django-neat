@@ -9,7 +9,7 @@ def create_superuser(apps, schema_editor):
     User.objects.create_superuser(
         username='admin',
         email='',
-        password='hitchhikerindulgencesviewpoint'
+        password='[[ hooks.password ]]'
     )
 
 

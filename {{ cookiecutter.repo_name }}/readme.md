@@ -17,7 +17,7 @@
 ## Default admin user login and password
 TODO Please change the password and remove this section from here!  
 user: admin  
-password: hitchhikerindulgencesviewpoint  
+password: [[ hooks.password ]]  
 
 ## Automatic documentation
 Automatic documentation is accessible on /admin/doc/

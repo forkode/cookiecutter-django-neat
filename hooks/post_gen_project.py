@@ -6,9 +6,9 @@ from pathlib import Path
 SECRET_KEY_SYMBOLS = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
 
 
-def generate_secret_key():
+def generate_secret(symbols=SECRET_KEY_SYMBOLS, length=50):
     return ''.join(
-        random.SystemRandom().choice(SECRET_KEY_SYMBOLS) for i in range(50)
+        random.SystemRandom().choice(SECRET_KEY_SYMBOLS) for i in range(length)
     )
 
 
@@ -33,6 +33,8 @@ def remove_recursively(pattern):
             shutil.rmtree(file)
 
 
-secret_key = generate_secret_key()
+secret_key = generate_secret()
+password = generate_secret(length=16)
 replace_string_recursively('[[ hooks.secret ]]', secret_key)
+replace_string_recursively('[[ hooks.password ]]', password)
 remove_recursively('[[ hooks.remove ]]')
