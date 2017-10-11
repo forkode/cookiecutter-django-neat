@@ -24,6 +24,9 @@ RUN python3.6 ./manage.py compilemessages
 RUN python3.6 ./manage.py collectstatic --no-input
 RUN python3.6 ./manage.py check
 
+RUN useradd -ms /bin/bash django
+USER django
+
 VOLUME /opt/{{ cookiecutter.repo_name }}/static/
 EXPOSE 8000
 ENTRYPOINT ["/opt/{{ cookiecutter.repo_name }}/docker-entrypoint.sh"]
