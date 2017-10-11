@@ -1,3 +1,0 @@
-FROM nginx
-RUN rm /etc/nginx/conf.d/*
-COPY ci/nginx.conf /etc/nginx/conf.d/

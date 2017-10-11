@@ -35,6 +35,8 @@ def remove_recursively(pattern):
 
 secret_key = generate_secret()
 password = generate_secret(length=16)
+
 replace_string_recursively('[[ hooks.secret ]]', secret_key)
 replace_string_recursively('[[ hooks.password ]]', password)
+
 remove_recursively('[[ hooks.remove ]]')
