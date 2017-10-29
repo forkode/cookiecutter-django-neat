@@ -25,7 +25,7 @@
       with_items: '{{ lookup("file", "../ci/apt-requirements.txt").splitlines() }}'
       become: true
       become_method: sudo
-    
+
     - apt: name={{ item }}
       with_items: [
         postgresql,
@@ -41,8 +41,6 @@
         requirements: '{{ home }}/ci/py-requirements.txt'
         virtualenv: '{{ home }}/venv'
         virtualenv_command: /usr/bin/python3.6 -m venv
-      become: true
-      become_true: sudo
 
     - postgresql_user:
         name: '{{ db_user }}'
