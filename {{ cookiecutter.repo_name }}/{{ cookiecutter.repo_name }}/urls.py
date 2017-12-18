@@ -7,12 +7,11 @@ from django.contrib import admin
 from rest_framework import routers
 {%- endif %}
 
-{% set views = cookiecutter.views.split(' ') -%}
 from {{ cookiecutter.repo_name}}.views import (
     PingView,
-    {%- for view in views %}
-    {{ view.capitalize() }}View,
-    {%- endfor %}
+    {%- if cookiecutter.create_example_classes == 'y' %}
+    MyView,
+    {%- endif %}
 )
 {%- if cookiecutter.use_rest_framework == 'y' %}
 
@@ -24,9 +23,9 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ping', PingView.as_view(), name='ping'),
-    {%- for view in views %}
-    url(r'^{{ view }}$', {{ view.capitalize() }}View.as_view(), name='{{ view }}'),
-    {%- endfor %}
+    {%- if cookiecutter.create_example_classes == 'y' %}
+    url(r'^my_view$', MyView.as_view(), name='my_view'),
+    {%- endif %}
     {%- if cookiecutter.use_rest_framework == 'y' %}
     url(r'^api/', include(router.urls)),
     {%- endif %}

@@ -3,7 +3,7 @@
     "repo_name": "{{ cookiecutter.project_name|replace(' ', '_')|replace('-', '_')|lower }}",
     "full_name": "Anonymous",
     "description": "This is a test project",
-    "views": "test",
+    "create_example_classes": "n",
     "use_rest_framework": "n",
     "use_sentry": "n",
     "_extensions": ["jinja2_time.TimeExtension"]

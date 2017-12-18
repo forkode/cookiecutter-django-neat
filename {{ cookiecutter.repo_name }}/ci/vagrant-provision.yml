@@ -37,7 +37,6 @@
       become_true: sudo
 
     - pip:
-      args:
         requirements: '{{ home }}/ci/py-requirements.txt'
         virtualenv: '{{ home }}/venv'
         virtualenv_command: /usr/bin/python3.6 -m venv
