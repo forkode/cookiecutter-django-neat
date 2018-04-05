@@ -1,8 +1,20 @@
-"""{{ cookiecutter.project_name }} urls."""
-from __future__ import absolute_import
+"""{{ cookiecutter.project_name }} URL configuration.
 
-from django.conf.urls import include, url
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
 from django.contrib import admin
+from django.urls import include, path
 {%- if cookiecutter.use_rest_framework == 'y' %}
 from rest_framework import routers
 {%- endif %}
@@ -20,13 +32,13 @@ router = routers.DefaultRouter()
 {%- endif %}
 
 urlpatterns = [
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^ping', PingView.as_view(), name='ping'),
+    path(r'admin/doc/', include('django.contrib.admindocs.urls')),
+    path(r'admin/', admin.site.urls),
+    path(r'ping', PingView.as_view(), name='ping'),
     {%- if cookiecutter.create_example_classes == 'y' %}
-    url(r'^my_view$', MyView.as_view(), name='my_view'),
+    path(r'my_view', MyView.as_view(), name='my_view'),
     {%- endif %}
     {%- if cookiecutter.use_rest_framework == 'y' %}
-    url(r'^api/', include(router.urls)),
+    path(r'api/', include(router.urls)),
     {%- endif %}
 ]

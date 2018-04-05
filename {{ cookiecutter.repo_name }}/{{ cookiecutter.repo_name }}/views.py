@@ -1,6 +1,4 @@
 """{{ cookiecutter.project_name }} views."""
-from __future__ import absolute_import
-
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
 {%- if cookiecutter.use_rest_framework == 'y' %}

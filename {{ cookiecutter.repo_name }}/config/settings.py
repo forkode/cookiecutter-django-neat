@@ -19,23 +19,23 @@ env = environ.Env(
 if path.exists(str(root.path('.env'))):
     env.read_env(str(root.path('.env')))  # reading .env file
 
-DEBUG = env('DEBUG')  # False if not in os.environ
-
 public_root = root.path('static/')
 
 MEDIA_ROOT = public_root('media')
 MEDIA_URL = 'media/'
 STATIC_ROOT = public_root('static')
-STATIC_URL = '/static/static/'
+STATIC_URL = '/static/'
 
 # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
 SECRET_KEY = '[[ hooks.secret ]]'
+
+DEBUG = env('DEBUG')  # False if not in os.environ
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,18 +50,17 @@ INSTALLED_APPS = (
     'rest_framework',
     {%- endif %}
     '{{ cookiecutter.repo_name }}',
-)
+]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-)
+]
 
 ROOT_URLCONF = '{{ cookiecutter.repo_name }}.urls'
 
@@ -85,14 +84,32 @@ WSGI_APPLICATION = '{{ cookiecutter.repo_name }}.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='sqlite:///db.sqlite'),
+    'default': env.db('DATABASE_URL', default='sqlite://db.sqlite3'),
 }
 
+
+# Password validation
+# https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+
 # Internationalization
-# https://docs.djangoproject.com/en/1.8/topics/i18n/
+# https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -108,7 +125,7 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'console':{
+        'console': {
             'level':'DEBUG',
             'class':'logging.StreamHandler',
             'stream': sys.stdout,
@@ -156,8 +173,8 @@ if DEBUG:
         'django_nose',
     )
 
-    MIDDLEWARE_CLASSES += (
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    MIDDLEWARE.append(
+        'debug_toolbar.middleware.DebugToolbarMiddleware'
     )
 
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
