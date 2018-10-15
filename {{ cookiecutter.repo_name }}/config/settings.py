@@ -167,6 +167,8 @@ RAVEN_CONFIG = {
 #     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
 
 if DEBUG:
+    import socket
+
     INSTALLED_APPS += (
         'debug_toolbar',
         'django_extensions',
@@ -185,3 +187,6 @@ if DEBUG:
         '--processes=8',
         '--cover-html',
     ]
+
+    ip = socket.gethostbyname(socket.gethostname())
+    INTERNAL_IPS += [ip[:-1] + '1']

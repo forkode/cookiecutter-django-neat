@@ -29,4 +29,4 @@ USER django
 
 VOLUME /opt/{{ cookiecutter.repo_name }}/static/
 EXPOSE 8000
-ENTRYPOINT ["/opt/{{ cookiecutter.repo_name }}/docker-entrypoint.sh"]
+CMD ["/usr/local/bin/gunicorn", "test_project.wsgi", "-b", "0.0.0.0:8000", "-w", "8"]
