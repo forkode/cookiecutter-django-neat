@@ -1,15 +1,32 @@
 # for development purposes
-version: '2'
-services:
-  {{ cookiecutter.repo_name }}:
-    build: .
-    env_file: .env
+version: '3.4'
 
-  {{ cookiecutter.repo_name }}_nginx:
+services:
+  pg:
+    image: postgres:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - 'static:/opt/{{ cookiecutter.repo_name }}/static:rw'
+    depends_on:
+      - pg
+
+  nginx:
     image: nginx
-    ports:
-      - "0.0.0.0:8000:80"
     volumes:
       - './config/nginx.conf:/etc/nginx/conf.d/default.conf:ro'
-    volumes_from:
-      - '{{ cookiecutter.repo_name }}'
+      - 'static:/opt/{{ cookiecutter.repo_name }}/static:ro'
+    depends_on:
+      - web
+
+volumes:
+  pg-data:
+  static:

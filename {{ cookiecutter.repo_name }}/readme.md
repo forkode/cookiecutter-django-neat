@@ -6,9 +6,7 @@
 1. Clone project from git
 2. Run  
 ```bash
-     vagrant up
-     vagrant ssh
-     ./manage.py runserver
+     docker-compose up
 ```
 ## Default admin user login and password
 TODO Please change the password and remove this section from here!  

@@ -1,9 +1,6 @@
-locales
-gettext
-postgresql-client
-python3.6
-python3.6-dev
-python3-pip
-python3-setuptools
-python3-wheel
-supervisor
+gcc
+python3-dev
+musl-dev
+postgresql-dev
+bash
+git

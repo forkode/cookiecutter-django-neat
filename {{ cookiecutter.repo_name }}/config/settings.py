@@ -27,7 +27,7 @@ STATIC_ROOT = public_root('static')
 STATIC_URL = '/static/'
 
 # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
-SECRET_KEY = '[[ hooks.secret ]]'
+SECRET_KEY = env('SECRET')
 
 DEBUG = env('DEBUG')  # False if not in os.environ
 
@@ -165,6 +165,8 @@ RAVEN_CONFIG = {
 
 # if 'test' in sys.argv:
 #     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
+
+INTERNAL_IPS = []
 
 if DEBUG:
     import socket

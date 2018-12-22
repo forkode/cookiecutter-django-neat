@@ -1,6 +1,6 @@
 """{{ cookiecutter.project_name }} models."""
-from django.db import models
 {%- if cookiecutter.create_example_classes == 'y' %}
+from django.db import models
 
 
 class MyModel(models.Model):

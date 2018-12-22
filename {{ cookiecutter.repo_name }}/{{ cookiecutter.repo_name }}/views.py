@@ -1,6 +1,7 @@
 """{{ cookiecutter.project_name }} views."""
 from django.http import HttpResponse
-from django.views.generic import TemplateView, View
+from django.views.generic import View
+{%- if cookiecutter.create_example_classes == 'y' %}from django.views.generic import TemplateView{%- endif %}
 {%- if cookiecutter.use_rest_framework == 'y' %}
 from rest_framework import viewsets
 {%- endif %}
