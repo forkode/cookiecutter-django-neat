@@ -12,6 +12,7 @@ services:
 
   web:
     build: .
+    command: web
     env_file:
       - .env
     volumes:
