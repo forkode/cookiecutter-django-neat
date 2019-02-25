@@ -7,6 +7,7 @@ COPY ./ci /opt/{{ cookiecutter.repo_name }}/ci
 RUN apk update &&\
     cat /opt/{{ cookiecutter.repo_name }}/ci/apt-requirements.txt | xargs apk add
 RUN python3 -m pip install -r /opt/{{ cookiecutter.repo_name }}/ci/py-requirements.txt
+RUN python3 -m pip install -U requests[socks]
 
 COPY . /opt/{{ cookiecutter.repo_name }}/
 WORKDIR /opt/{{ cookiecutter.repo_name }}/
