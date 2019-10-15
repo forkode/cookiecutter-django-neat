@@ -1,40 +1,41 @@
 # core components
-django==2.1.7
+django==2.2.6
 gunicorn==19.9.0
-psycopg2-binary==2.7.7
+psycopg2-binary==2.8.3
 
 # linters
-bandit==1.5.1
-pycodestyle==2.5.0
-pydocstyle==3.0.0
-pylint==2.2.2
+bandit==1.6.2
+pycodestyle==2.4.0
+pydocstyle==4.0.1
+astroid==2.2.5
+pylint==2.3.1
 pylint-common==0.2.5
-pylint-django==2.0.5
-prospector==1.1.6.2
+pylint-django==2.0.10
+prospector==1.1.7
 
 # utils
-coverage==4.5.2
-docutils==0.14
+coverage==4.5.4
+docutils==0.15.2
 django-environ==0.4.5
 django-nose==1.4.6
 {% if cookiecutter.use_rest_framework == 'y' -%}
-djangorestframework==3.9.1
+djangorestframework==3.10.3
 {%- endif %}
 {% if cookiecutter.use_sentry == 'y' -%}
 raven==6.10.0
 {%- endif %}
 
 # essential libraries
-requests==2.21.0
-PySocks==1.6.8
-urllib3==1.24.1
+requests==2.22.0
+PySocks==1.7.1
+urllib3==1.25.6
 
 
 # django extensions
-django-debug-toolbar==1.11
-django-extensions==2.1.5
-factory_boy==2.11.1
+django-debug-toolbar==2.0
+django-extensions==2.2.3
+factory_boy==2.12.0
 
 # debugging
-ipdb==0.11
+ipdb==0.12.2
 rpdb==0.1.6
